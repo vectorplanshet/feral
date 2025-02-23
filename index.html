@@ -268,7 +268,7 @@ font-weight: bold;
     background: url('kod.png') center/cover no-repeat;
     pointer-events: none; /* Позволяет кликам проходить сквозь */
     z-index: 1000; /* Поверх карты */
-    opacity: 0.1; /* Сделать картинку менее прозрачной */
+    opacity: 0.3; /* Сделать картинку менее прозрачной */
     transition: filter 0.3s ease; /* Плавный переход фильтра */
 }
 
@@ -376,6 +376,7 @@ font-weight: bold;
     </style>
 </head>
 <body>
+
     <div id="map"></div>
     <div class="overlay"></div>
     <img src="pricel.png" class="image-overlay" alt="Central Image">
@@ -1129,52 +1130,6 @@ fetch('trevoga.json')
             menuVisible = !menuVisible;
             document.getElementById('alert-menu').style.display = menuVisible ? 'block' : 'none';
         };
-        document.getElementById('toggleLinesButton').onclick = function () {
-            linesVisible = !linesVisible;
-            routeLines.forEach(routeData => {
-                if (linesVisible) {
-                    routeData.line.addTo(map);
-                } else {
-                    map.removeLayer(routeData.line);
-                }
-            });
-
-            this.textContent = linesVisible ? 'Скрыть линии' : 'Показать линии';
-        };
-
-        window.addEventListener('beforeunload', (event) => {
-            event.preventDefault();
-            event.returnValue = '';
-        });
-        const course = calculateCourse(lat, lng, targetLat, targetLng) * (180 / Math.PI);
-            const angle = (course + 360) % 360;
-            marker._icon.querySelector('.icon').style.transform = `rotate(${angle}deg)`;
-
-            let timeElapsed = 0;
-            let routeLine = null;  // Define routeLine variable for each marker
-            const interval = setInterval(() => {
-                timeElapsed++;
-                const [newLat, newLng] = calculateNewPosition(lat, lng, speed, timeElapsed, targetLat, targetLng);
-                marker.setLatLng([newLat, newLng]);
-
-                // Draw line for each marker
-                if (!routeLine) {
-                    routeLine = L.polyline([marker.getLatLng(), [newLat, newLng]], {
-                        color: lineColor,
-                        weight: 3,
-                        opacity: 0.7,
-                    }).addTo(map);
-                    routeLines.push({ marker, line: routeLine });  // Store the marker and its associated line
-                } else {
-                    routeLine.addLatLng([newLat, newLng]);
-                }
-
-                if (haversine(newLat, newLng, targetLat, targetLng) <= 2) {
-                    clearInterval(interval);
-                    marker.remove();
-                    routeLine.remove();  // Remove line when the object reaches the target
-                }
-            }, 1000);
     </script>
 </body>
 </html>

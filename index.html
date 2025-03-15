@@ -16,7 +16,10 @@
     src="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.js"
     integrity="sha384-8SqKZR7V8uOetpjjbcNJHvwuHpb074WS0UXjCLhzfJUqYn3B/uWx1WVv5mwRp1mV"
     crossorigin="anonymous"
+    
 ></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
         /* General Map Styles */
         #map {
@@ -149,7 +152,7 @@
         }
         .label-container {
             font-size: 18px;
-font-weight: bold;
+            font-weight: bold;
             -webkit-text-stroke-color: black;
             -webkit-text-stroke-width: 0.5px;
         }
@@ -616,27 +619,6 @@ map.on('layerremove', updateOverlayFilter);
 
 // Если карта уже загружена, сразу применим фильтр
 updateOverlayFilter();
-L.control.ruler().addTo(map);
-const provider = new window.GeoSearch.OpenStreetMapProvider();
-
-const search = new window.GeoSearch.GeoSearchControl({
-    provider: provider,
-    style: "bar",
-    showMarker: false,
-});
-
-map.addControl(search);
-
-// Исправляем центрирование
-map.on("geosearch/showlocation", async function (e) {
-    const results = await provider.search({ query: e.location.label });
-
-    if (results.length > 0) {
-        const bestMatch = results[0]; // Берём первый результат (обычно самый точный)
-        map.setView([bestMatch.y, bestMatch.x], 14); // Центрируемся
-    }
-});
-
 
         let currentObjectId = 9500;
         let deleteMode = false;
